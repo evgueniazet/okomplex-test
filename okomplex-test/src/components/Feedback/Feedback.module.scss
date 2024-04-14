@@ -1,0 +1,9 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.wrapper {
+    background-color: $bg-primary;
+    color: $black;
+    border-radius: 15px;
+    padding: 20px;
+}
