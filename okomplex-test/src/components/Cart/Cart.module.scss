@@ -6,11 +6,16 @@
     background-color: $bg-primary;
     color: $black;
     border-radius: 15px;
-    padding: 20px;
+    padding: 40px;
+    width: 50vw;
 
     @include tablet {
         margin-top: 60px;
         width: 90vw;
+        padding: 20px;
+    }
+
+    @include mobile {
         padding: 10px;
     }
 }
