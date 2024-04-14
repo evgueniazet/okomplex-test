@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Box, Container, Button, TextField } from '@mui/material';
 import styles from './Product.module.scss';
 import { TProductProps } from './Product.types';
 
 export const Product = ({ product, selectedQuantity = 0, onQuantityChange }: TProductProps) => {
     const [showInput, setShowInput] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const selectedProducts = localStorage.getItem('cart');
+
+            if (selectedProducts) {
+                const parsedSelectedProducts = JSON.parse(selectedProducts);
+                if (parsedSelectedProducts[product.id]) {
+                    setShowInput(true);
+                }
+            }
+        }
+    }, []);
 
     const handleBuyButtonClick = () => {
         setShowInput(true);

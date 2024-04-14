@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Typography, Container } from '@mui/material';
 import styles from './page.module.scss';
 import { Feedback } from '@/components/Feedback/Feedback.tsx';
@@ -32,6 +32,13 @@ export default function Home() {
     const handlePopupStateChange = (popupState: TPopupState) => {
         setPopupState(popupState);
     };
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedProducts = localStorage.getItem('cart');
+            setSelectedProducts(storedProducts ? JSON.parse(storedProducts) : {});
+        }
+    }, []);
 
     return (
         <main className={styles.main}>

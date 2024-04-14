@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Typography, Button } from '@mui/material';
 import styles from './Cart.module.scss';
 import { PhoneMask } from '../PhoneMask/PhoneMask';
@@ -8,9 +8,17 @@ import { fetchBuyProduct } from './Cart.utils';
 const PHONE_NUMBER_QUANTITY = 11;
 
 export const Cart = ({ products, selectedProducts, onPopupStateChange }: TCartProps) => {
-    const [phoneNumber, setPhoneNumber] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>(
+        typeof window !== 'undefined' ? localStorage.getItem('phoneNumber') || '' : ''
+    );
     const [error, setError] = useState<string>('');
     const cartProducts = products?.filter((product) => Object.keys(selectedProducts).some((item) => Number(item) === product.id));
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('phoneNumber', phoneNumber);
+        }
+    }, [phoneNumber]);
 
     const handleBuyButtonClick = async () => {
         const phoneNumberArr = phoneNumber.split('');
