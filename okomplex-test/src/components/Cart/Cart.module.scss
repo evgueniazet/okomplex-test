@@ -28,6 +28,11 @@
 
 }
 
+.error {
+    color: $error;
+    margin-top: 10px;
+}
+
 .container {
     display: flex;
     flex-direction: row;
@@ -41,6 +46,10 @@
     border-radius: 15px;
     padding: 10px;
     font-size: 30px;
+
+    &Error {
+        border: 1px solid $error;
+    }
 
     @include tablet {
         font-size: 14px;

@@ -10,7 +10,7 @@ type TPhoneMaskProps = {
 export const PhoneMask = ({ value, onChange, className }: TPhoneMaskProps) => {
     return (
         <InputMask
-            mask="999-999-9999"
+            mask="+7(999)999-99-99"
             placeholder="Enter phone number"
             value={value}
             onChange={onChange}

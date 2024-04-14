@@ -1,15 +1,37 @@
 'use client';
 
+import { useState } from 'react';
 import { Typography, Container } from '@mui/material';
 import styles from './page.module.scss';
 import { Feedback } from '@/components/Feedback/Feedback.tsx';
 import { Product } from '@/components/Product/Product.tsx';
 import { Cart } from '@/components/Cart/Cart.tsx';
 import { useGetFeedback, useGetPageData } from './page.utils.ts';
+import { TSelectedProducts } from './page.types.ts';
+import { TPopupState } from '@/components/Cart/Cart.types.ts';
+import { Popup } from '@/components/Popup/Popup.tsx';
 
 export default function Home() {
     const feedback = useGetFeedback();
     const pageData = useGetPageData(1, 20);
+    const [selectedProducts, setSelectedProducts] = useState<TSelectedProducts>({});
+    const [popupState, setPopupState] = useState<TPopupState>();
+
+    const handleQuantityChange = (id: number, quantity: number) => {
+        const selectedProductsUpdated = { ...selectedProducts };
+
+        if (quantity === 0) {
+            delete selectedProductsUpdated[id];
+            setSelectedProducts(selectedProductsUpdated);
+        } else {
+            selectedProductsUpdated[id] = quantity;
+            setSelectedProducts(selectedProductsUpdated);
+        }
+    };
+
+    const handlePopupStateChange = (popupState: TPopupState) => {
+        setPopupState(popupState);
+    };
 
     return (
         <main className={styles.main}>
@@ -22,11 +44,19 @@ export default function Home() {
                         <Feedback key={index} feedbackData={item.text} />
                     ))}
                 </div>
-                <Cart />
+                <Cart products={pageData?.products} selectedProducts={selectedProducts} onPopupStateChange={handlePopupStateChange} />
                 <div className={styles.productsWrapper}>
-                    {pageData?.products.map((item) => <Product key={item.id} product={item} />)}
+                    {pageData?.products.map((item) =>
+                        <Product
+                            selectedQuantity={selectedProducts[item.id]}
+                            onQuantityChange={handleQuantityChange}
+                            key={item.id}
+                            product={item}
+                        />
+                    )}
                 </div>
             </Container>
+            <Popup setPopupState={setPopupState} popupState={popupState} />
         </main>
     );
 }

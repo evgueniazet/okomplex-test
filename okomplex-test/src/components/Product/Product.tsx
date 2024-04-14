@@ -3,28 +3,34 @@ import { Typography, Box, Container, Button, TextField } from '@mui/material';
 import styles from './Product.module.scss';
 import { TProductProps } from './Product.types';
 
-export const Product = ({ product }: TProductProps) => {
-    const [quantity, setQuantity] = useState(1);
+export const Product = ({ product, selectedQuantity = 0, onQuantityChange }: TProductProps) => {
     const [showInput, setShowInput] = useState(false);
 
     const handleBuyButtonClick = () => {
         setShowInput(true);
+        onQuantityChange(product.id, 1);
     };
 
     const handleAddButtonClick = () => {
-        setQuantity((prevQuantity) => prevQuantity + 1);
+        onQuantityChange(product.id, selectedQuantity + 1);
     };
 
     const handleRemoveButtonClick = () => {
-        if (quantity > 1) {
-            setQuantity((prevQuantity) => prevQuantity - 1);
+        let newSelectedQuantity = selectedQuantity;
+
+        if (selectedQuantity > 0) {
+            newSelectedQuantity = newSelectedQuantity - 1;
+            onQuantityChange(product.id, newSelectedQuantity);
+        }
+
+        if (newSelectedQuantity === 0) {
+            setShowInput(false);
         }
     };
 
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
         const value = parseInt(e.target.value);
-        setQuantity(value);
+        onQuantityChange(product.id, Number(value));
     };
 
     return (
@@ -61,7 +67,7 @@ export const Product = ({ product }: TProductProps) => {
                     <TextField
                         type="number"
                         className={styles.quantityInput}
-                        value={quantity}
+                        value={selectedQuantity}
                         onChange={handleQuantityChange}
                     />
                     <Button

@@ -6,4 +6,6 @@ export type TProductProps = {
         description: string;
         price: number;
     };
+    selectedQuantity: number;
+    onQuantityChange: (id: number, quantity: number) => void;
 };

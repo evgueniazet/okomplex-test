@@ -17,3 +17,5 @@ export type TPageData = {
     total: number;
     products: TProduct[];
 };
+
+export type TSelectedProducts = Record<number, number>;
